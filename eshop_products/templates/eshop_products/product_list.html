@@ -1,3 +1,10 @@
+<div>
+    <div>
+        <form action="/products/search" method="get">
+            <input type="text" placeholder="جستـجو" value="{{ request.GET.q }}" name="q"/>
+        </form>
+    </div>
+</div>
 <ul>
     {% for object in object_list %}
     <li>
