@@ -1,5 +1,13 @@
 <h4>{{ product.title }}</h4>
 <h6>{{ product.price }}</h6>
+<form method="post" action="/add-user-order/">
+    {% csrf_token %}
+    <input type="text" name="product_id" value="{{ product.pk }}" hidden>
+    <input type="number" name="count" value="1" min="1">
+    <button type="submit">
+        افـزودن به سبـد خریـد
+    </button>
+</form>
 <img src="{{ product.image.url }}" alt="{{ product.title }}">
 <p>
     دسته بندی ها :

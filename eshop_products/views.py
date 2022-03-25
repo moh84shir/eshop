@@ -21,16 +21,18 @@ class ProductsListByCategory(generic.ListView):
             raise Http404('صفحه ی مورد نظر یافت نشد')
         return Product.objects.get_products_by_category(category_name)
 
-
+from eshop_order.forms import UserNewOrderForm
 def product_detail(request, pk):
     product = Product.objects.get_by_id(pk)
     product_categories = product.categories.all()
+    form = UserNewOrderForm(request.POST or None)
     product.visit_count += 1
     product.save()
 
     context = {
         'product': product,
-        'product_categories': product_categories
+        'product_categories': product_categories,
+        'form':form,
     }
 
     return render(request, 'eshop_products/product_detail.html', context)
