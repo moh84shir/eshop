@@ -1,0 +1,9 @@
+<h1>{{ article.title }}</h1>
+{% if article.photo %}
+<img src="{{ article.photo.url }}" alt="{{ article.title }}">
+{% endif %}
+<h4>{{ article.subject }}</h4>
+<h6>{{ article.description }}</h6>
+<h6>{{ article.created }}</h6>
+<p> نویسنده :  {% if article.get_author_fullname %}{{ article.get_author_fullname }}{% else %}{{ article.author }}</p>{% endif %}</p>
+<p>{{ object.text }}</p>

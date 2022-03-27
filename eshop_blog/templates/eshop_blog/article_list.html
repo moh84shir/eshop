@@ -1,0 +1,7 @@
+<ol>
+    {% for article in article_list %}
+    <li><a href="{% url 'blog:detail' article.pk %}">{{ article.title }}</a></li>
+    {% empty %}
+    <h4>مقاله ای یافت نشد</h4>
+    {% endfor %}
+</ol>

@@ -32,7 +32,7 @@ class Product(models.Model):
     title = models.CharField(max_length=150, verbose_name='عنوان')
     description = models.TextField(verbose_name='توضیحات')
     price = models.IntegerField(verbose_name='قیمت')
-    image = models.ImageField(upload_to="products/%D",
+    image = models.ImageField(upload_to="products/%M",
                               null=True, blank=True, verbose_name='تصویر')
     active = models.BooleanField(default=False, verbose_name='فعال / غیرفعال')
     categories = models.ManyToManyField(

@@ -1,19 +1,17 @@
 import time
 
 from django.contrib.auth.decorators import login_required
+from django.http import Http404, HttpResponse
 from django.shortcuts import redirect, render
+from django.urls import reverse
+from eshop_products.models import Product
+from zeep import Client
 
 from .forms import UserNewOrderForm
 from .models import Order, OrderDetail
-from eshop_products.models import Product
-
-from django.http import HttpResponse, Http404
-from django.shortcuts import redirect
-from zeep import Client
-from django.urls import reverse
 
 
-@login_required(login_url='/login')
+@login_required
 def add_user_order(request):
     new_order_form = UserNewOrderForm(request.POST or None)
     print(request.POST)
@@ -31,15 +29,13 @@ def add_user_order(request):
         product = Product.objects.get_by_id(product_id=product_id)
         order.orderdetail_set.create(
             product_id=product.id, price=product.price, count=count)
-        # todo: redirect user to user panel
-        # return redirect('/user/orders')
 
         return redirect(reverse('products:detail', kwargs={'pk': product_id}))
 
     return redirect('/')
 
 
-@login_required(login_url='/login')
+@login_required
 def user_open_order(request, *args, **kwargs):
     context = {
         'order': None,
@@ -57,7 +53,7 @@ def user_open_order(request, *args, **kwargs):
     return render(request, 'order/user_open_order.html', context)
 
 
-@login_required(login_url='/login')
+@login_required
 def remove_order_detail(request, *args, **kwargs):
     detail_id = kwargs.get('detail_id')
     if detail_id is not None:
@@ -75,7 +71,7 @@ description = "توضیحات مربوط به تراکنش را در این قس
 email = 'email@example.com'  # Optional
 mobile = '09123456789'  # Optional
 
-client = Client('https://www.zarinpal.com/pg/services/WebGate/wsdl')
+client = None # Client('https://www.zarinpal.com/pg/services/WebGate/wsdl')
 # Important: need to edit for realy server.
 CallbackURL = 'http://localhost:8000/verify'
 
