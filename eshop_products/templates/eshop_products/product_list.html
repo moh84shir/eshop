@@ -1,7 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %}لیست محصولات{% endblock title %}
+
+{% block content %}
 <div>
     <div>
         <form action="/products/search" method="get">
-            <input type="text" placeholder="جستـجو" value="{{ request.GET.q }}" name="q"/>
+            <input type="text" placeholder="جستـجو" value="{{ request.GET.q }}" name="q" />
         </form>
     </div>
 </div>
@@ -33,3 +38,4 @@
     {% endif %}
 </ul>
 {% endif %}
+{% endblock content %}

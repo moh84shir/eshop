@@ -1,8 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.views import generic
 from .models import Product
 from eshop_products_category.models import ProductCategory
 from django.http import Http404
+from eshop_order.forms import UserNewOrderForm
 
 
 class ProductList(generic.ListView):
@@ -21,13 +22,13 @@ class ProductsListByCategory(generic.ListView):
             raise Http404('صفحه ی مورد نظر یافت نشد')
         return Product.objects.get_products_by_category(category_name)
 
-from eshop_order.forms import UserNewOrderForm
+
 def product_detail(request, pk):
     product = Product.objects.get_by_id(pk)
     product_categories = product.categories.all()
-    form = UserNewOrderForm(request.POST or None)
     product.visit_count += 1
     product.save()
+    form = UserNewOrderForm(request.POST or None)
 
     context = {
         'product': product,

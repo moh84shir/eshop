@@ -1,5 +1,11 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ product.title }}{% endblock title %}
+
+{% block content %}
 <h4>{{ product.title }}</h4>
 <h6>{{ product.price }}</h6>
+{% if request.user.is_authenticated %}
 <form method="post" action="/add-user-order/">
     {% csrf_token %}
     <input type="text" name="product_id" value="{{ product.pk }}" hidden>
@@ -8,10 +14,16 @@
         افـزودن به سبـد خریـد
     </button>
 </form>
+{% else %}
+برای خرید محصول <a href="{% url 'accounts:login' %}">وارد</a> شوید
+{% endif %}
 <img src="{{ product.image.url }}" alt="{{ product.title }}">
+{% if products_categories %}
 <p>
     دسته بندی ها :
     {% for category in product_categories %}
-        ,{{ category }}
+    ,{{ category }}
     {% endfor %}
 </p>
+{% endif %}
+{% endblock content %}

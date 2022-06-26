@@ -1,4 +1,8 @@
-<!--/breadcrums-->
+{% extends 'base.html' %}
+
+{% block title %}سبد خرید{% endblock title %}
+
+{% block content %}
 {% if order != None and details|length > 0 %}
 <div>
     <table>
@@ -16,7 +20,8 @@
             {% for detail in details %}
             <tr>
                 <td>
-                    <a href="{% url 'products:detail' detail.product.pk %}"><img src="{{ detail.product.image.url }}" alt="" style="width: 110px;height: 110px"></a>
+                    <a href="{% url 'products:detail' detail.product.pk %}"><img src="{{ detail.product.image.url }}"
+                            alt="" style="width: 110px;height: 110px"></a>
                 </td>
                 <td>
                     <h4><a href="{% url 'products:detail' detail.product.pk %}">{{ detail.product.title }}</a></h4>
@@ -49,3 +54,4 @@
 </div>
 <h5>جمع سبد خرید : {{ total }}</h5>
 <a class="btn btn-default check_out" href="/request">پرداخت</a>
+{% endblock content %}

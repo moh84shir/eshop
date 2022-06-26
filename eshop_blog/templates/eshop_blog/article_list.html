@@ -1,3 +1,7 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
 <ol>
     {% for article in article_list %}
     <li><a href="{% url 'blog:detail' article.pk %}">{{ article.title }}</a></li>
@@ -5,3 +9,4 @@
     <h4>مقاله ای یافت نشد</h4>
     {% endfor %}
 </ol>
+{% endblock content %}

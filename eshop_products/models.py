@@ -1,6 +1,7 @@
 from django.db import models
 from django.db.models import Q
 import os
+from django.http import Http404
 
 from eshop_products_category.models import ProductCategory
 
@@ -17,7 +18,7 @@ class ProductsManager(models.Manager):
         if qs.count() == 1:
             return qs.first()
         else:
-            return None
+            raise Http404('محصولی یافت نشد')
 
     def search(self, query):
         lookup = (
