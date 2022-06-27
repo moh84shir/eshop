@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}نظرات  {{ product.title }}{% endblock title %}
+
+{% block content %}
+
+<a id="header" href="{% url 'products:detail' product.pk %}">برگشت به محصول</a>
+{% for comment in comments %}
+    <hr style="border-color: red;" />
+    <h3>{{ comment.title }} - {{ comment.user.get_full_name }}</h3>
+    <hr />
+    <p>{{ comment.text }}</p>
+    <hr />
+    <small>{{ comment.created }}</small>
+    <hr style="border-color: red;" />
+    <br />
+    <br />
+    <br />
+{% empty %}
+<p style="color:red;">
+هیچی نیست عزیزم
+</p>
+{% endfor %}
+
+<a href="#header">برگشت به بالا</a>
+{% endblock content %}

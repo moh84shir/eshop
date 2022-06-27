@@ -2,7 +2,7 @@ from django.db import models
 from django.db.models import Q
 import os
 from django.http import Http404
-
+from django.contrib.auth import get_user_model
 from eshop_products_category.models import ProductCategory
 
 
@@ -48,3 +48,18 @@ class Product(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class ProductComment(models.Model):
+    product:Product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name='محصول')
+    title = models.CharField(max_length=120, verbose_name='عنوان')
+    text = models.TextField(verbose_name='متن')
+    created = models.DateTimeField(verbose_name='زمان', auto_now_add=True)
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, verbose_name='کاربر')
+
+    class Meta:
+        verbose_name = 'نظر'
+        verbose_name_plural = 'نظرات'
+
+    def __str__(self):
+        return self.product.__str__()

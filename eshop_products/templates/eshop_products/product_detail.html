@@ -18,12 +18,40 @@
 برای خرید محصول <a href="{% url 'accounts:login' %}">وارد</a> شوید
 {% endif %}
 <img src="{{ product.image.url }}" alt="{{ product.title }}">
-{% if products_categories %}
+{% if product_categories %}
 <p>
     دسته بندی ها :
     {% for category in product_categories %}
     ,{{ category }}
     {% endfor %}
 </p>
+{% endif %}
+
+{% if request.user.is_authenticated %}
+<hr style="border-color: blue;" />
+    <form method="post">
+        {% csrf_token %}
+        {{ comment_form.as_p }}
+        <button type="submit">ثبت نظر</button>
+    </form>
+<hr style="border-color: blue;" />
+
+{% endif %}
+
+{% for comment in comments %}
+    <hr style="border-color: red;" />
+    <h3>{{ comment.title }} - {{ comment.user.get_full_name }}</h3>
+    <hr />
+    <p>{{ comment.text }}</p>
+    <hr />
+    <small>{{ comment.created }}</small>
+    <hr style="border-color: red;" />
+{% empty %}
+<p style="color:red;">
+هیچی نیست عزیزم
+</p>
+{% endfor %}
+{% if many %}
+    <a href="{% url 'products:comments' product.pk %}">نمایش تمام نضرات</a>
 {% endif %}
 {% endblock content %}

@@ -1,9 +1,10 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render
 from django.views import generic
-from .models import Product
+from .models import Product, ProductComment
 from eshop_products_category.models import ProductCategory
 from django.http import Http404
 from eshop_order.forms import UserNewOrderForm
+from . import forms
 
 
 class ProductList(generic.ListView):
@@ -29,11 +30,29 @@ def product_detail(request, pk):
     product.visit_count += 1
     product.save()
     form = UserNewOrderForm(request.POST or None)
+    product_comments = ProductComment.objects.filter(product=product).order_by('-pk')
+    many = True
+
+
+    if len(product_comments) <= 5:
+        many = False
+
+    comment_form = forms.AddCommentForm(request.POST)
+
+
+    if comment_form.is_valid():
+        cd = comment_form.cleaned_data
+        ProductComment.objects.create(title=cd.get('title'), text=cd.get('text'), user=request.user, product=product)
+
+    print(many)
 
     context = {
         'product': product,
+        'comments': product_comments[:5],
         'product_categories': product_categories,
         'form':form,
+        'many': many,
+        'comment_form': comment_form,
     }
 
     return render(request, 'eshop_products/product_detail.html', context)
@@ -49,3 +68,18 @@ class SearchProducts(generic.ListView):
             return Product.objects.search(query)
 
         return Product.objects.get_active_products()
+
+
+
+
+# comments
+def product_comment_list(request, product_id):
+    product = Product.objects.get(pk=product_id)
+    product_comments = ProductComment.objects.filter(product=product)
+
+    context = {
+        'product': product,
+        'comments': product_comments,
+    }
+
+    return render(request, 'eshop_products/product_comments.html', context)
